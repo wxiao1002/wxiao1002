@@ -3,11 +3,11 @@
 
 <h3> 👨🏻‍💻 &nbsp;About Me </h3>
 
-- 🤔 &nbsp; Exploring new technologies and developing software solutions.
+- 🤔 &nbsp; 探索新技术和开发软件并提出解决方案.
 - 🎓 &nbsp; 2018年毕业于河北科技大学-网络工程，学士学位.
-- 💼 &nbsp; 在百度智能云（贵州）担任技术专家.
-- 🌱 &nbsp; Learning more about Cloud Architecture, Systems Design and Artificial Intelligence.
-- ✍️ &nbsp;  Blog Writing as hobbies.
+- 💼 &nbsp; 在百度智能云（贵州）担任技术专家,正在做物联网与大数据相关产品
+- 🌱 &nbsp; 正在学习关于云原生、架构设计和人工智能的知识.
+- ✍️ &nbsp;  写文章主要是提高自驱力与知识的沉淀.
 
 <h3> 🛠 &nbsp;Tech Stack</h3>
 
