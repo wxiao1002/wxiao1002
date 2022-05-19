@@ -189,6 +189,12 @@ select // 类似switch ，但会随机选择一个可运行的case,如果没有c
 
 ## 循环语句
 - for 循环
+```go
+var i int
+for i=0;i<5;i++{
+	//
+}
+```
 - 循环嵌套
 ### 循环控制语句
 - break 跳出当前for 循环或者switch
@@ -264,6 +270,79 @@ func main() {
 	c1.radius = 20.00
 	fmt.Println(c1.getArea())
 }
+```
 
+## 变量作用域
+作用域为已经声明的标识符所表示的常量、变量、类型和函数或包在源码中的作用范围<br/>
+- 函数体内定于的变量为局部变量
+- 函数外定义的变量为全局变量
+- 函数定义中的变量为形式参数
+**局部变量与全局变量名称可以相同，但是函数体中局部变量会被优先考虑**
 
+## 数组
+Go 语言提供数组类型的数据结构，数组是具有相同类型的一族长度固定的数据序列
+```
+var variable_name [SIZE] variable_type
+```
+定义一个一维数组 长度为10 数据类型是 float
+```go
+var blance [10] float32
+```
+### 数组的初始化
+```go
+var balance  = [5] float32 {100.0,2.0,3.4,7.0,50.0}
+```
+数组长度不确定，使用... 代替长度，编译器会根据元素个数自行推断
+```go
+cc := [...]int{1, 2, 3}
+	fmt.Println(cc[0])
+```
+### 多维数组
+声明
+```go
+var var_name [SIZE][SIZE]...[SIZE] var_type
+```
+声明一个三维整型数组
+```go
+var threed [3] [3] [3] int 
+```
+多维数组中添加一维数组 **append**
+```go
+	// 创建数组
+	values := [][]int{}
+	// 创建1维数组
+	row1 := []int{1, 2, 3}
+	row2 := []int{4, 5, 6}
+	// 向二维数组中添加一维数组
+	values = append(values, row1)
+	values = append(values, row2)
+	fmt.Println(values[1][1])
+```
+声明并初始化数组
+```go
+a := [3,4]  init {
+ {0,1,2,3},
+ {4,5,6,7},
+ {8,9,10,11}
+}
+```
+循环输出 **range**
+```go
+for i := range sites {
+		fmt.Println(sites[i])
+}
+```
+### 向函数中传递数组
+在函数中传递数组，只需要将形参设置成数组
+```go
+func getAverage ( arr [] int, size int) float32{
+	var i int
+	var sum float32
+	for i=0;i<size;i++ {
+		sum += arr[i]
+    }
+	avg := sum / size
+	return avg
+	
+}
 ```
