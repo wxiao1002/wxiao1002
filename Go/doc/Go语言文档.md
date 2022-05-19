@@ -430,4 +430,104 @@ func main() {
 允许向函数中传递指针，只需要在函数定义中参数设置为指针类型即可
 ```go
 
+func main() {
+	x := 100
+	y := 200
+	swapVar(&x, &y)
+	fmt.Printf("x is: %d,y is %d", x, y)
+}
+
+func swapVar(x, y *int) {
+	var temp int
+	temp = *x
+	*x = *y
+	*y = temp
+}
+```
+
+## 结构体
+结构体是有一些了相同类型或不同类型的数据 构成的数据结合
+### 定义结构体
+```go
+type struct_var_type struct {
+	member defintion
+}
+```
+一旦定义结构体类型，他就能用于便可的声明,变量方式可以如下
+```
+var_name := struct_type{value1,value2}
+var_name := struct_type{key1: value1,key2:value2}
+```
+实例如下：
+```go
+type Book struct {
+	title   string
+	author  string
+	book_id int32
+}
+
+func main() {
+	// 创建一个新的结构体
+	fmt.Println(Book{
+		"go",
+		"wangxiao",
+		123,
+	})
+	// key : value 形式赋值
+	new_book := Book{
+		title:   "new",
+		author:  "wangxiap",
+		book_id: 1 << 2,
+	}
+	fmt.Println(new_book)
+	// 忽略字段
+	old_book := Book{
+		title:  "new",
+		author: "wangxiap",
+	}
+	fmt.Println(old_book)
+}
+```
+### 访问结构 成员
+直接使用 . 操作符，结构体。成员名
+
+### 结构体作为函数参数
+可以像其他类型一样将结构体作为参数传递给函数
+```
+func main {
+
+   var test_book Book
+	test_book.book_id = 1
+	test_book.title = "test"
+	test_book.author = "hello"
+
+	printBook(test_book)
+
+}
+func printBook(book Book) {
+	fmt.Println(book.book_id)
+	fmt.Println(book.title)
+	fmt.Println(book.author)
+}
+```
+
+### 结构体指针
+可以定义指向结构体的指针变量
+```
+// 声明格式
+var struct_ptr *struct_type
+```
+以上定义的指针变量可以存储结构体变量的地址，查看结构体变量地址，直接使用&
+```
+struct_ptr := &struct
+```
+使用结构体指针访问结构体成员，使用 . 操作符号
+```go
+printBook(&test_book)
+
+
+func printBook(book *Book) {
+	fmt.Println(book.book_id)
+	fmt.Println(book.title)
+
 ```
