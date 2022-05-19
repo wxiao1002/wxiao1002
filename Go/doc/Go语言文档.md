@@ -346,3 +346,88 @@ func getAverage ( arr [] int, size int) float32{
 	
 }
 ```
+
+## 指针
+变量是一种是哟过方便的占位符，用于引用计算机内存地址，**取地址符号&，放到一个变量前使用会返回相应变量的内存地址**
+```go
+func main() {
+	var a int = 10
+	fmt.Printf("%x", &a)
+}
+```
+一个指针变量指向了一个值的内存地址，类似于变量和常量，指针的声明如下
+```
+var var_name *var_type
+```
+var_type 为指针类型<br/>
+var_name 为指针变量名，*号用于指定变量为一个指针
+```go
+var ip *int // 指向int 类型
+var fp *float64 // 指向浮点类型
+```
+### 如何使用指针
+- 定义指针变量
+- 为指针变量赋值
+- 访问指针变量中指向地址的值
+```go
+var c int = 20 // 声明实际变量
+	var ip *int    // 声明指针
+	ip = &c        // 指针变量的存储地址
+	fmt.Printf("a 变量地址是%x\n", &c)
+
+	fmt.Printf("*ip 变量的值%d", *ip)
+	
+```
+### 空指针
+当一个指针被定义后没有分配任何变量是，他的值是nil,nil指针也被称为空指针，一个指针变量通常缩写称ptr
+```go
+var ptr *int
+fmt.Printf("%x",ptr)
+```
+空指针判断
+```go
+if(ptr != nil) // 不是空指针
+```
+### 指针数组
+定义一个指针数组来存储地址
+```
+// 声明 整型 指针 数组
+var ptr [] *int
+```
+ptr 为整形的指针数组，因此每一个元素都指向一个值
+```go
+    arr := [3]int{100, 200, 300}
+	var i int
+	var ptr [3]*int
+	for i = 0; i < 3; i++ {
+		ptr[i] = &arr[i]
+	}
+	for i = 0; i < 3; i++ {
+		fmt.Printf("a[%d] is%d", i, *ptr[i])
+	}
+
+```
+### 指向指针的指针
+如果一个指针变量存放的是另一个指针变量的地址，则称为这个指针便可为指向指针的指针变量<br />
+当定义一个指向指针的指针变量是，第一个指针存放的是第二个指针的地址，第二个指针存放的是变量的地址
+```go
+// 声明
+var ptr **int
+```
+访问指向指针的指针变量时候需要两个*
+```go
+func main() {
+ var a int
+ var ptr *int
+ var pptr **int
+ a = 300
+ ptr = &a
+ pptr = &ptr
+ fmt.Println(**pptr)
+}
+```
+### 向函数传递指针参数
+允许向函数中传递指针，只需要在函数定义中参数设置为指针类型即可
+```go
+
+```
