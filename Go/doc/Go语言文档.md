@@ -7,7 +7,7 @@
 break default func interface select case defer go map struct chan else goto package switch const fallthrough if range type continue for import return var 
 - 预定义标识符 </br>
 append bool byte cap close complex complex64 complex128 uint 16 copy false float32 float64 image int int8 int16 int32 .....
- 
+
 - 变量声明 </br>
 
   var age int;
@@ -531,3 +531,145 @@ func printBook(book *Book) {
 	fmt.Println(book.title)
 
 ```
+
+
+
+## 切片 Slice
+
+切片是对数组的抽象<br/>
+
+数组长度是不可变得，在特定场景是不太使用，提供了一种灵活，功能强悍的类型切片（**动态数组**），与数组相比切片长度不固定，可以追加元素，再追加时候可能使切片容量变大
+
+### 定义切片
+
+```
+var var_name[] type
+```
+
+切片是不需要说明长度，或者使用make 函数创建切片
+
+```
+var slice1 [] type = make([]type, length)
+// 也可以简写成
+slice := make( [] type, length)
+```
+
+make函数 make( [] T, length, capacity)
+
+- Length 是数组的长度也是切片的初始长度
+- Capacity 是制定容量，可选参数
+
+### 切片的初始化
+
+```
+s := [] int{1,2,3}
+```
+
+直接初始化切片,[] 标识切片类型，{1,2,3} 初始值依次是 1，2，3 其中len=cap =3
+
+```
+s := arr[:]
+```
+
+初始化切片s,是数组arr的引用
+
+```
+s := arr[startIndex:endIndex]
+```
+
+将数组中从下标 startIndex 到endIndex -1 的元素创建为新切片
+
+```
+s := arr[startIndex:]
+```
+
+将数组中从startIndex到最后一个元素创建为切片
+
+```
+s := arr[:endIndex]
+// 从第一个元素到endIndex-1
+```
+
+### len() 和cap() 函数
+
+切片是可索引的，并且可以有**len()** 方法获取长度，切片提供了计算容量的方法**cap()**可以测量切片最大才可以达到多少
+
+```
+func main() {
+	var numbers = make([]int, 3, 5)
+	printSlice(numbers)
+}
+func printSlice(sp []int) {
+	fmt.Printf("len :%d,cap:%d,slice:%v", len(sp), cap(sp), sp)
+}
+```
+
+### 空切片
+
+一个切未初始化之前默认是nil,长度为0
+
+```
+var number1 []int
+	if number1 == nil {
+		fmt.Println("is nil")
+	}
+```
+
+### 切片截取
+
+可以通过设置下限和上限来设置截取切片
+
+```
+func main() {
+
+	// 创建切片
+	numbers := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+	printSlice(numbers)
+
+	// 打印子切片 ，从1～4
+	printSlice(numbers[1:4])
+
+	// 默认下限度是0 上限是len
+	printSlice(numbers[:4])
+	printSlice(numbers[1:])
+
+	numbers1 := make([]int, 0, 5)
+	printSlice(numbers1)
+
+	// 子切片
+	numbers2 := numbers1[:2]
+	printSlice(numbers2)
+}
+func printSlice(sp []int) {
+	fmt.Printf("len :%d,cap:%d,slice:%v\n", len(sp), cap(sp), sp)
+}
+```
+
+### append() 和copy() 函数
+
+如果想增加切片的容量，必须创建一个更大的切片病吧原切片的内容拷贝过来
+
+```
+func main() {
+	var numbers []int
+	PrintSlice1(numbers)
+
+	// 追加元素
+	numbers = append(numbers, 0)
+	numbers = append(numbers, 1)
+	PrintSlice1(numbers)
+	// 追加多个元素
+	numbers = append(numbers, 2, 3, 4)
+	PrintSlice1(numbers)
+
+	numbers1 := make([]int, len(numbers), cap(numbers)*2)
+
+	// 拷贝之前的内容到 新的
+	copy(numbers1, numbers)
+	PrintSlice1(numbers1)
+}
+func PrintSlice1(sp []int) {
+	fmt.Printf("len :%d,cap:%d,slice:%v\n", len(sp), cap(sp), sp)
+}
+```
+
