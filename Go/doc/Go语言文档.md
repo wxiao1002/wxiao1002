@@ -672,4 +672,93 @@ func PrintSlice1(sp []int) {
 	fmt.Printf("len :%d,cap:%d,slice:%v\n", len(sp), cap(sp), sp)
 }
 ```
+## 范围 Range
+range 关键字用于for循环中迭代数组，切片，channel和集合的元素，在数组和切片中他返回元素的喜爱安和对应的值，在集合中返回key-value对
+<p>格式如下：</p>
+
+```
+for key, value := range oldMap{
+    newMap[key] = value
+}
+```
+以上代码中的key,value可以省略，只想读取key或者value 如下：
+```
+for key := range Mao
+
+for _,value := range Mao
+```
+
+## 集合 Map
+Map 是一种无需的简直对几个，Map 最重要的一天是通过key 来快速检索数据，key 类似与索引，指向数据的值
+### 定义Map
+```
+var map_var =  map[key_type] value_type
+map_var1 = make(map[key_type] value_type)
+```
+如果不初始化map,那么就会创建一个nil map,nil map 是不能存放键值对
+```go
+// 创建集合
+	var countryCapitalMap map[string]string
+	countryCapitalMap = make(map[string]string)
+	// 插入值
+	countryCapitalMap["cc"] = "cc"
+	countryCapitalMap["aa"] = "aa"
+	countryCapitalMap["bb"] = "bb"
+	// 便利
+	for countrt := range countryCapitalMap {
+		fmt.Println(countrt, countryCapitalMap[countrt])
+	}
+
+	// 查看元素是否在集合中存在
+	capital, ok := countryCapitalMap["123"]
+	if ok {
+		fmt.Println("yes", capital)
+	} else {
+		fmt.Println("no")
+	}
+```
+
+### delete 函数
+delete 用户删除集合元素，参数为map 和对应的key
+```go
+	
+	countryMap := map[string]string{"aa":"1","bb":"2"}
+	fmt.Println(countryMap)
+	// 便利
+	for key_ := range countryMap{
+		fmt.Println(key_,countryMap[key_])
+	}
+	// 删除
+	delete(countryMap,"aa")
+	// 便利
+	for key_ := range countryMap{
+		fmt.Println(key_,countryMap[key_])
+	}
+```
+
+## 递归函数
+递归： 就是在运行过程中自己调用自己,格式如下
+```go
+func recursion () {
+    recursion()
+}
+func func main() {
+    recursion()
+}
+```
+go 语言是支持递归的，但在我们使用递归时，开发者要设置推出条件，否则递归将陷于无限循环 <br/>
+### 阶乘
+```go
+func main() {
+	fmt.Println(Factrorial(10))
+}
+
+func Factrorial(n uint64) uint64 {
+	if n > 0 {
+		return n * Factrorial(n-1)
+	}
+	return 1
+}
+```
+
 
