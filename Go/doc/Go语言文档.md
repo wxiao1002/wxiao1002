@@ -761,4 +761,139 @@ func Factrorial(n uint64) uint64 {
 }
 ```
 
+## 类型转换
+类型转换用于将一种数据类型的便利转换为另外一种类型的变量，格式如下
+```go
+type_name(expression)
+```
+### 实例
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var sum int = 17
+	var count int =5
+	var mean float32
+	mean = float32(sum)/float32(count)
+}	
+
+```
+不支持隐式类型转换
+
+## 接口
+提供了一种数据类型即接口，他把所有具有共性的方法定义在一起，任何其他类型只要实现了这些方法就实现了这个接口
+### 实例
+```go
+// 定义接口
+type interface_name interface{
+	method_name1 [return_type]
+	method_name2 [return_type]
+}
+// 定义结构体
+type struct_name struct {
+  
+}
+// 实现方法
+func (struct_var struct_name)method_name1() [return_typr]  {
+
+}
+```
+### 实现
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var phone Phone
+	phone = new(NokiaPhone)
+	phone.call()
+	phone = new(Xiaomi)
+	phone.call()
+}
+
+type Phone interface {
+	call()
+}
+type NokiaPhone struct {
+}
+
+func (nokia NokiaPhone) call() {
+	fmt.Println("Nokia call")
+}
+
+type Xiaomi struct {
+}
+
+func (xiaomi Xiaomi) call() {
+	fmt.Println("xiaomi call")
+}
+```
+## 错误处理
+通过哪吃的错误接口提供了简单的错误处理机制
+<br/>
+error 是一个接口类型，定义如下
+```go
+type error interface {
+	Error () string
+}
+```
+可以在编码只能够实现error 接口来生成一些错误信息，函数通常在最后的返回值中返回错误信息，使用errors.new 返回一个信的错误信息
+```go
+func Sqrt (f float64)(float64,error){
+	if f<0{
+		return 0,errors.New("is error")
+    }
+	// do things
+}
+```
+因此在函数调用过程中一般判断返回的error 是否为nil
+```go
+result ,error := Sqrt(-1)
+if error != nil{
+	// do things
+}
+```
+## 并发
+go 语言支持并发，只需要使用go 关键字开启goroutine 即可，goroutine是轻量级线程，gorountine 的调度有golang 运行是进行管理，
+<br/>
+goroutine 语法格式
+```
+go 函数名(参数列表)
+```
+例如
+```go
+go f(x,y,z)
+```
+开启一个新的goroutine
+<br/>
+go 语言允许使用go 语句创建一个新的运行是线程，即goroutine,以一个不同的、新创建的goroutine 执行一个函数，同时一个程序中的所有goroutine 共享一个地址
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	go say("world")
+	say("hello")
+}
+func say(s string) {
+	for i := 0; i <= 5; i++ {
+		time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
+	}
+}
+
+```
+上面代码输出结果，可以看出hello与world 并没有先后顺序，因为是两个goroutine
+
+### 通道 channel
+channel 是用于传递数据的一个数据结构< /br>
+
+
 
