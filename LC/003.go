@@ -1,4 +1,4 @@
-package lc
+package main
 
 // 双指针 
 func lengthOfLongestSubstring(s string) int {
