@@ -6,11 +6,22 @@ package 数据结构与算法之美;
  */
 public class MergeSort {
 
-    public void mergeSort (int arr,int low,int high){
+    public static void main(String[] args) {
+        int [] a = new int[]{3,4,0,1,5,6,7,8};
+        MergeSort mergeSort = new MergeSort();
+        mergeSort.mergeSort(a,0,a.length);
+
+        for (int i : a) {
+            System.out.println(i);
+        }
+    }
+
+    public void mergeSort (int[] arr,int low,int high){
         while (low <high){
             int mid = (low+high)/2;
             mergeSort(arr,low,mid);
             mergeSort(arr,mid+1,high);
+            merge(arr,low,mid,high);
         }
     }
 

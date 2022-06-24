@@ -1,6 +1,6 @@
 package datastruct
 
-func insertsort(array []int) []int {
+func sort(array []int) []int {
 	if len(array) <= 1 {
 		return array
 	}

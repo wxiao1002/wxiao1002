@@ -1,9 +1,7 @@
 package datastruct
 
-func main() {
-	bubblesort(make([]int, 10))
-}
-func bubblesort(array []int) []int {
+
+func sort(array []int) []int {
 	count := len(array)
 	for i := 0; i < count; i++ {
 		for j := 0; j < count-1-i; j++ {
@@ -14,3 +12,4 @@ func bubblesort(array []int) []int {
 	}
 	return array
 }
+
