@@ -8,16 +8,16 @@ func main() {
 }
 
 func trap(height []int) int {
-	res := 0
-	for i := 1; i < len(height)-1; i++ {
-		left, right := 0, 0
-		for j := i; j < len(height); j++ {
-			right = getMax(height[j], right)
+	res, n := 0, len(height)
+	for i := 1; i < n-1; i++ {
+		leftMax, rightMax := 0, 0
+		for j := i; j < n; j++ {
+			rightMax = getMax(height[j], rightMax)
 		}
 		for j := i; j > 0; j-- {
-			left = getMax(height[j], left)
+			leftMax = getMax(height[j], leftMax)
 		}
-		res += getMin(left, right) - height[i]
+		res += getMin(leftMax, rightMax) - height[i]
 	}
 	return res
 }
