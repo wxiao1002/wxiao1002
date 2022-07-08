@@ -1,4 +1,4 @@
-package lc
+package main
 
 // 检测链表是否 有环 快慢指针
 
