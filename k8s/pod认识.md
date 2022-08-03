@@ -78,7 +78,50 @@ imagesPullPolicy: Always | Never | IfNotPresent 获取容器镜像策略
 
 ### Pod 的资源限制
 
-每个Pod 都可以对齐使用服务器上的计算资源设置限额，k8s 中可以设置限额的计算资源有CPU，Memory 两种
+每个Pod 都可以对齐使用服务器上的计算资源设置限额，k8s 中可以设置限额的计算资源有CPU，Memory 两种。其中CPU 资源单位是CPU 数量，是一个绝对值而非相对值，Memory 是一个绝对值，他的单位是内存字节数
+
+![](https://img2020.cnblogs.com/blog/1526344/202101/1526344-20210118180254354-1502116740.png)
+
+
+```yaml
+resources: #资源管理
+  requests: #容器运行时，最低资源需求，也就是说最少需要多少资源容器才能正常运行  
+    cpu: 0.1     #CPU资源（核数），两种方式，浮点数或者是整数+m，0.1=100m，最少值为0.001核（1m）
+    memory: 32Mi #内存使用量  
+  limits:   #资源限制最大范围  
+    cpu: 0.5  
+    memory: 64Mi  
+```
+
+上述代码表明容器申请最少 0.1 个 CPU 以及 32MiB 内存， 在运行过程中容器所能使 用的资源配额为 0.5 个 CPU 以及 64MiB 内存。
+
+
+### Pod 的健康检查
+
+- livenessProbe 存活检查
+
+    如果检查失败，将杀死pod ,根据pod restartPolicy 操作
+- readinessProce 就绪检查
+    
+    如果检查失败，会把pod 从 service endpoint 中剔除
+- Probe 支持三种方式的渐渐
+  
+  - httpGet 
+    
+        发送http ，状态码在200-400 之间是成功
+  - exec
+        
+        执行shell 命令返回状态码值为0 成功
+  
+  - tcpSocket
+        
+        发起tcp socket 建立成功
+
+
+![](https://img2020.cnblogs.com/blog/1526344/202101/1526344-20210120005559474-2042797210.png)
+
+
+
 
 
 
