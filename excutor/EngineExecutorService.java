@@ -1,4 +1,4 @@
-package com.iwhalecloud.bassc.lcdp.engine.excutor;
+package excutor;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
