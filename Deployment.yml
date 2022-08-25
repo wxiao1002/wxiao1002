@@ -1,0 +1,59 @@
+kind: "Deployment"
+apiVersion: "apps/v1"
+metadata:
+  name: "demo-app"
+  namespace: "ns"
+  labels:
+    app: "demo-app"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "demo-app"
+  template:
+    metadata:
+      labels:
+        app: "demo-app"
+      annotations:
+        tagrandom: '11615'
+    spec:
+      volumes:
+        - name: "demo-app"
+          configMap:
+            name: "demo-app"
+            items:
+              - key: "application.yml"
+                path: "application.yml"
+            defaultMode: 420
+      containers:
+        - name: "demo-app"
+          image: "harbor/demo-app:v1
+          ports:
+            - name: "http"
+              containerPort: 80
+              protocol: "TCP"
+          env:
+            - name: "TZ"
+              value: "Asia/Shanghai"
+          resources:
+            limits:
+              cpu: "4"
+              memory: "3000Mi"
+            requests:
+              cpu: "500m"
+              memory: "1000Mi"
+          terminationMessagePath: "/dev/termination-log"
+          terminationMessagePolicy: "File"
+          imagePullPolicy: "Always"
+      restartPolicy: "Always"
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: "ClusterFirst"
+      securityContext: {}
+      schedulerName: "default-scheduler"
+  strategy:
+    type: "RollingUpdate"
+    rollingUpdate:
+      maxUnavailable: "25%"
+      maxSurge: "25%"
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
