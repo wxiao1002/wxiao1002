@@ -13,4 +13,42 @@
 #### ingress 工作流程
 
 ![img_8.png](img_8.png)
+
+#### ingress 和Pod 的关系
+
+- ingress 通过service和Pod 关联的
+
+service 是通过labels关联Pod的
+
+- ingress 作为统一的入口，会维护很多的域名
+
+域名与Service进行关联。实现一个域名与多个Pod进行关联，实现负载均衡
+
 ### k8s ingress 使用
+
+#### 环境初始化
+
+- 创建一个测试的Pod
+
+    kubectl create deployment webnginx --image nginx
+
+- 暴露创建的Pod
+
+    kubectl expose deployment webnginx --port 80 --target-port 80 --type NodePort
+
+#### 部署ingress
+    
+- 然后是部署ingress 
+- kubectl apply -f ingress-controller.yaml
+
+- 查看ingress 部署信息
+    - 该资源编排文件是创建一个名称空间
+    - 所以我们需要指定名称空间去查看
+![img_9.png](img_9.png)
+
+- 查看ingress 的Pod 部署信息
+
+kubectl get pods -n ingress-nginx 
+
+#### 配置ingress 规则
+![img_10.png](img_10.png)
