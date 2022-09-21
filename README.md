@@ -18,6 +18,7 @@
 - 🛢 &nbsp;
   ![MySQL](https://img.shields.io/badge/-MySQL-333333?style=flat&logo=mysql)
   ![Redis](https://img.shields.io/badge/-Redis-333333?style=flat&logo=redis)
+  ![Rabbit](https://img.shields.io/badge/-Rabbit-333333?style=flat&logo=rabbit)
 - ⚙️ &nbsp;
   ![SpringCloud](https://img.shields.io/badge/-SpringCloud-333333?style=flat&logo=springcloud)
   ![Netty](https://img.shields.io/badge/-Netty-333333?style=flat&logo=netty)
