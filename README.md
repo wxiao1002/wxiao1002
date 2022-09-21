@@ -22,6 +22,7 @@
 - ⚙️ &nbsp;
   ![SpringCloud](https://img.shields.io/badge/-SpringCloud-333333?style=flat&logo=springcloud)
   ![Netty](https://img.shields.io/badge/-Netty-333333?style=flat&logo=netty)
+  ![K8S](https://img.shields.io/badge/-K8S-333333?style=flat&logo=K8S)
 <br/>
 
 <a href="https://github.com/AVS1508">
