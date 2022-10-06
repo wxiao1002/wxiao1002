@@ -6,3 +6,6 @@
 4. ksoftirqd 线程响应软中断，并调用网卡驱动程序注册的poll函数开始收包
 5. 收到的包交给各级的协议栈处理，依次是ip ->tcp/udp ,然后放入用户进程的skb接收队列
 
+## RingBuffer
+skb
+
