@@ -5,7 +5,7 @@
 
 - 🤔 &nbsp; 喜欢探索新技术和排查困难或者奇怪的问题.
 - 🎓 &nbsp; 2018年毕业于河北科技大学-网络工程.
-- 💼 &nbsp; 在百度智能云（贵州）担任开发,负责架构设计与核心开发,正在做AIOT相关.
+- 💼 &nbsp; 在百度担任开发,负责架构设计与核心开发,正在做AIOT相关.
 - 🌱 &nbsp; 主要语言是Java,正在学习Go、计算机底层、人工智能相关知识.
 - ✍️ &nbsp;  使用github 主要是记录一些文章与代码实现,提高自驱能力.
 
@@ -25,9 +25,9 @@
   ![K8S](https://img.shields.io/badge/-K8S-333333?style=flat&logo=K8S)
 <br/>
 
-<a href="https://github.com/tingfeng1002">
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=tingfeng1002&theme=buefy&show_icons=true" />
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=tingfeng1002&theme=buefy&layout=compact" />
+<a href="https://github.com/wxiao1002">
+  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=wxiao1002&theme=buefy&show_icons=true" />
+  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=wxiao1002&theme=buefy&layout=compact" />
 </a>
 
 <br/>
