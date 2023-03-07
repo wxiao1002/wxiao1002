@@ -1,0 +1,20 @@
+private static Object transformPyResultToObject(PyObject pyObject) {
+    if (pyObject instanceof PyDictionary) {
+        return transformToPlainObject(((PyDictionary) pyObject).getMap());
+    } else if (pyObject instanceof PyList) {
+        return transformToPlainObject(Arrays.asList(((PyList) pyObject).getArray()));
+    } else if (pyObject instanceof PyString) {
+        return ((PyString) pyObject).decode("utf-8");
+    } else if (pyObject instanceof PyInteger) {
+        return ((PyInteger) pyObject).getValue();
+    } else if (pyObject instanceof PyFloat) {
+        return ((PyFloat) pyObject).getValue();
+    } else if (Map.class.isAssignableFrom(pyObject.getType().getProxyType())) {
+        Map<Object, Object> map = (Map<Object, Object>) pyObject.__tojava__(Map.class);
+        return transformToPlainObject(map);
+    } else if (List.class.isAssignableFrom(pyObject.getType().getProxyType())) {
+        List<Object> list = (List<Object>) pyObject.__tojava__(List.class);
+        return transformToPlainObject(list);
+    }
+    return pyObject.__tojava__(pyObject.getType().getProxyType());
+}
