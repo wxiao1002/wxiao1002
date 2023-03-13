@@ -1,0 +1,111 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.python.core.Py;
+import org.python.core.PyDictionary;
+import org.python.core.PyFloat;
+import org.python.core.PyFunction;
+import org.python.core.PyInteger;
+import org.python.core.PyList;
+import org.python.core.PyObject;
+import org.python.core.PyString;
+import org.python.util.PythonInterpreter;
+ 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+ 
+public class JavaRunPythonTest {
+    private static Properties init() {
+        final Properties props = new Properties();
+        props.setProperty("python.import.site", "false");
+        return props;
+    }
+ 
+    public static void main(String[] args) throws JsonProcessingException {
+        // 处理本地运行报警，可忽略
+        PythonInterpreter.initialize(System.getProperties(), init(), new String[0]);
+ 
+        PythonInterpreter interpreter = new PythonInterpreter();
+        String code = "# -*- coding: UTF-8 -*-\n" +
+                "def parse(state):\n" +
+                "    a = 21\n" +
+                "    b = 10\n" +
+                "    c = 0\n" +
+                "    c = a + b\n" +
+                "    output = {'1-c的': c}\n" +
+                "    state['output'] = output\n" +
+                // 加了中文处理验证逻辑
+                "    state['addChinese'] = '添加的中文'\n" +
+                "    state['句子'] = ['添加的','abc','句子']\n" +
+                "    return state;";
+        try {
+            InputStream stream = new ByteArrayInputStream(code.getBytes());
+            interpreter.execfile(stream);
+        } catch (Exception ignore) {
+        }
+        PyFunction func = interpreter.get("parse", PyFunction.class);
+        Map<Object, Object> param = new HashMap<>();
+        param.put("output", new HashMap<>());
+        param.put("number", 1);
+        param.put("zhongwen", Py.newStringUTF8("中文"));
+        param.put(Py.newStringUTF8("列表"), Arrays.asList(
+                Py.newStringUTF8("这是"), Py.newStringUTF8("this is"),
+                Py.newStringUTF8("一个"), Py.newStringUTF8("a"),
+                Py.newStringUTF8("列表"), Py.newStringUTF8("list"))
+        );
+        PyObject pyObject = func.__call__(Py.java2py(param));
+        String result = pyObject.toString();
+        System.out.println(result);
+        Object transformed = transformPyResultToObject(pyObject);
+        System.out.println(transformed);
+    }
+ 
+    private static Object transformPyResultToObject(PyObject pyObject) {
+        if (pyObject instanceof PyDictionary) {
+            return transformToPlainObject(((PyDictionary) pyObject).getMap());
+        } else if (pyObject instanceof PyList) {
+            return transformToPlainObject(Arrays.asList(((PyList) pyObject).getArray()));
+        } else if (pyObject instanceof PyString) {
+            return ((PyString) pyObject).decode("utf-8");
+        } else if (pyObject instanceof PyInteger) {
+            return ((PyInteger) pyObject).getValue();
+        } else if (pyObject instanceof PyFloat) {
+            return ((PyFloat) pyObject).getValue();
+        } else if (Map.class.isAssignableFrom(pyObject.getType().getProxyType())) {
+            Map<Object, Object> map = (Map<Object, Object>) pyObject.__tojava__(Map.class);
+            return transformToPlainObject(map);
+        } else if (List.class.isAssignableFrom(pyObject.getType().getProxyType())) {
+            List<Object> list = (List<Object>) pyObject.__tojava__(List.class);
+            return transformToPlainObject(list);
+        }
+        return pyObject.__tojava__(pyObject.getType().getProxyType());
+    }
+ 
+    private static Object transformToPlainObject(Object object) {
+        if (object instanceof PyObject) {
+            return transformPyResultToObject((PyObject) object);
+        }
+        if (object instanceof Map) {
+            Map<Object, Object> map = (Map<Object, Object>) object;
+            Map<Object, Object> trans = new HashMap<>();
+            map.forEach((k, v) -> {
+                trans.put(transformToPlainObject(k), transformToPlainObject(v));
+            });
+            return trans;
+        }
+        if (object instanceof List) {
+            List<Object> list = (List<Object>) object;
+            List<Object> trans = new ArrayList<>();
+            list.forEach(item -> trans.add(transformToPlainObject(item)));
+            return trans;
+        }
+        if (object instanceof String) {
+            return Py.newString((String) object).decode("utf-8");
+        }
+        return object;
+    }
+}
