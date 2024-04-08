@@ -1,0 +1,23 @@
+@Override
+public Object doAround(ProceedingJoinPoint joinPoint, RequestLimit reguestLimit) throws
+// 获取注解中的参数
+long period=reguestLimit.period():
+long limitCount=requestLimit.count():
+// 请求信息
+Stringip 三RequestUtil.getClientIpAddress():
+Stringuri =RequestUtil.getRequestUri():
+"reg limit ".concat(uri).concat(ip);String key =
+//当前时间戳
+long currentMs=System.currentTimeMillis();
+// Lua 脚本
+String luaScript = "redis.call('zremrangebyscore', KEYS[1],0, ARGV[3])"+"local current count =redis.call('zcard',KEYS[1])”+"if current count <tonumber(ARGV[2])then"+"redis.call('zadd',KEYS[1]，ARGV[1]，ARGV[1])” +"redis.call('expire'，KEYS[1]，ARGV[4])"+"end " +
+"return redis.call('zcard',KEYS[1])":
+//执行 Lua 脚本
+Long count=(Long)redisTemplate.execute(new DefaultRedisScript<>(luaScript,Long.class)Collections.singletonList(key)
+currentMs,limitCount,currentMs-period *1000,period);
+//检查当前可用次数
+(count >= limitCount){i卡
+1og.error("接口拦截:{} 请求超过限制频率【{}次/{}s】，IP为 {}"，uri，limitcount，perithrow new AuroraRuntimeException(ResponseCode.TOO FREQUENT VISIT).
+// 执行用户请求
+return joinPoint.proceed();
+          }
