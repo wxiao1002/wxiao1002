@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SSE 测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        #chat-box { height: 400px; border: 1px solid #ddd; padding: 10px; overflow-y: auto; }
+        .message { margin: 8px 0; padding: 8px; border-radius: 4px; }
+        .user { background: #e3f2fd; margin-left: 20%; }
+        .bot { background: #f5f5f5; margin-right: 20%; }
+        .error { background: #ffebee; color: #d32f2f; }
+        input[type="text"] { width: 70%; padding: 10px; margin-right: 10px; }
+        button { padding: 10px 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>SSE 测试</h1>
+    <div class="container">
+        <div>
+            <h3>控制</h3>
+            <input type="text" id="message" placeholder="输入消息...">
+            <button onclick="sendMessage()">发送消息</button>
+            <button onclick="toggleSSE()">连接/断开</button>
+        </div>
+        <div>
+            <h3>实时对话</h3>
+            <div id="chat-box"></div>
+        </div>
+    </div>
+
+    <script>
+        let eventSource = null;
+        let isConnected = false;
+
+        // 切换 SSE 连接
+        function toggleSSE() {
+            if (isConnected) {
+                disconnectSSE();
+            } else {
+                connectSSE();
+            }
+        }
+
+        // 建立 SSE 连接
+        function connectSSE() {
+            if (isConnected) return;
+            
+            eventSource = new EventSource('http://localhost:5000/api/receive/content');
+            
+            eventSource.onopen = () => {
+                isConnected = true;
+                addMessage("系统", "SSE 连接已建立", "system");
+            };
+
+            eventSource.onmessage = (e) => {
+                try {
+                    const data = JSON.parse(e.data);
+                    handleSSEData(data);
+                } catch (err) {
+                    addMessage("错误", `数据解析失败: ${err}`, "error");
+                }
+            };
+
+            eventSource.onerror = (e) => {
+                addMessage("系统", "SSE 连接异常", "error");
+                disconnectSSE();
+            };
+        }
+
+        // 处理 SSE 数据
+        function handleSSEData(data) {
+            if (data.status === 'streaming' && data.data) {
+                addMessage("AI", data.data, "bot");
+            } else if (data.status === 'error') {
+                addMessage("错误", data.message, "error");
+            }
+        }
+
+        // 发送消息到后端
+        async function sendMessage() {
+            const input = document.getElementById('message');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage("我", message, "user");
+            input.value = '';
+
+            try {
+                const response = await fetch('http://localhost:5000/api/send/content', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(message)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP 错误: ${response.status}`);
+                }
+            } catch (err) {
+                addMessage("错误", `发送失败: ${err.message}`, "error");
+            }
+        }
+
+        // 断开 SSE 连接
+        function disconnectSSE() {
+            if (eventSource) {
+                eventSource.close();
+                eventSource = null;
+                isConnected = false;
+                addMessage("系统", "SSE 连接已关闭", "system");
+            }
+        }
+
+        // 添加消息到聊天框
+        function addMessage(sender, text, type) {
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+            document.getElementById('chat-box').appendChild(div);
+            
+            // 自动滚动到底部
+            const chatBox = document.getElementById('chat-box');
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // 页面关闭时断开连接
+        window.addEventListener('beforeunload', disconnectSSE);
+    </script>
+</body>
+</html>
