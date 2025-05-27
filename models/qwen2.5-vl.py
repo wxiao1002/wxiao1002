@@ -2,6 +2,8 @@ from modelscope import Qwen2_5_VLForConditionalGeneration, AutoProcessor
 from qwen_vl_utils import process_vision_info
 import torch
 import argparse
+import os
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
 
 def analyze_video(video_path: str, prompt: str, fps: float = 1.0, max_pixels: int = 854 * 480):
     """
